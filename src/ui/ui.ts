@@ -1,7 +1,6 @@
-import { obtenerNumeroAleatorio, obtenerNumeroCarta, cambiarContador, actualizarContTotal, estadoJuego, obtenerPuntosCarta, 
-        sumarPuntos, actualizarPuntuacion, reiniciarContadores } from "../motor/motor";
+import { Juego } from "../motor/motor";
 
-import { obtenerUrlCarta, cartaBack} from "../modelo/modelo";
+import { Cartas, contadores } from "../modelo/modelo";
 
 const pintarCarta = (urlCarta: string) => {
 const elementoImagen = document.getElementById("imgCarta");
@@ -78,22 +77,22 @@ const pintarComentarios = (puntosSumados: number) => {
 };
 
 export const dameCarta = () => {
-  const numeroAleatorio = obtenerNumeroAleatorio();
-  const carta = obtenerNumeroCarta(numeroAleatorio);
-  cambiarContador(estadoJuego, carta.toString());
-  actualizarContTotal(estadoJuego)
-  const urlCarta = obtenerUrlCarta(carta);
+  const numeroAleatorio = Juego.obtenerNumeroAleatorio();
+  const carta = Juego.obtenerNumeroCarta(numeroAleatorio);
+  contadores.cambiarContador(carta.toString());
+  Juego.actualizarContTotal();
+  const urlCarta = Cartas.obtenerUrlCarta(carta);
   pintarCarta(urlCarta);
-  const puntosCarta = obtenerPuntosCarta(carta);
-  estadoJuego.puntosSumados = sumarPuntos(estadoJuego, puntosCarta);
-  actualizarPuntuacion(estadoJuego, estadoJuego.puntosSumados);
-  pintarPuntuacion(estadoJuego.puntosTotales);
-  pintarRestantes(estadoJuego.contTotal.toString());
+  const puntosCarta = Juego.obtenerPuntosCarta(carta);
+  contadores.puntosSumados = Juego.sumarPuntos(puntosCarta);
+  Juego.actualizarPuntuacion(contadores.puntosSumados);
+  pintarPuntuacion(contadores.puntosTotales);
+  pintarRestantes(contadores.contTotal.toString());
   comprobarPartida();
 };
 
 const comprobarPartida = () => {
-  if (estadoJuego.puntosTotales === 7.5 || estadoJuego.puntosTotales > 7.5) {
+  if (contadores.puntosTotales === 7.5 || contadores.puntosTotales > 7.5) {
     if (botonDameCarta !== null && 
       botonDameCarta !== undefined && 
       botonDameCarta instanceof HTMLButtonElement) {
@@ -107,11 +106,11 @@ const comprobarPartida = () => {
     }
   }
   
-  if (estadoJuego.puntosTotales === 7.5) {
+  if (contadores.puntosTotales === 7.5) {
     pintarMejorPuntuacion(7.5);
     pintarMensajeFinal("Lo has clavado! Enhorabuena!");
   }
-  if (estadoJuego.puntosTotales > 7.5) {
+  if (contadores.puntosTotales > 7.5) {
     pintarMensajeFinal("Has perdido... Prueba otra vez!");
   }
 };
@@ -119,14 +118,14 @@ const comprobarPartida = () => {
 const botonDameCarta = document.getElementById("dameCarta");
 
 export const reinicio = () => {
-  pintarCarta(cartaBack);
-    estadoJuego.puntosTotales = 0;
-    actualizarPuntuacion(estadoJuego, 0);
+  pintarCarta(Cartas.cartaBack);
+    contadores.puntosTotales = 0;
+    Juego.actualizarPuntuacion(0);
     pintarPuntuacion(0);
     pintarMejorPuntuacion(0);
     pintarMensajeFinal("");
     pintarRestantes("40");
-    reiniciarContadores(estadoJuego);
+    contadores.reiniciarContadores();
 
     const elementoComentarios = document.getElementById("mensajeComentarios");
     if (elementoComentarios !== null && elementoComentarios instanceof HTMLSpanElement) {
@@ -178,11 +177,11 @@ const comprobarBotonMePlanto = () => {
 const botonMePlanto = document.getElementById("mePlanto");
 export const funcionBotonMePlanto = () => {
   comprobarBotonMePlanto();
-  pintarMejorPuntuacion(estadoJuego.puntosTotales);
-  actualizarPuntuacion(estadoJuego, 0);
+  pintarMejorPuntuacion(contadores.puntosTotales);
+  Juego.actualizarPuntuacion(0);
   pintarPuntuacion(0);
-  pintarComentarios(estadoJuego.puntosSumados);
-  estadoJuego.puntosSumados = 0;
+  pintarComentarios(contadores.puntosSumados);
+  contadores.puntosSumados = 0;
   comprobarPartida();
 };
 
@@ -200,10 +199,10 @@ const comprobarBotonQueHabriaPasado = () => {
 
 export const funcQueHabriaPasado = () => {
   comprobarBotonQueHabriaPasado();
-  const numeroAleatorio = obtenerNumeroAleatorio();
-  const carta = obtenerNumeroCarta(numeroAleatorio);
-  cambiarContador(estadoJuego, carta.toString());
-  actualizarContTotal(estadoJuego)
-  const urlCarta = obtenerUrlCarta(carta);
+  const numeroAleatorio = Juego.obtenerNumeroAleatorio();
+  const carta = Juego.obtenerNumeroCarta(numeroAleatorio);
+  contadores.cambiarContador(carta.toString());
+  Juego.actualizarContTotal()
+  const urlCarta = Cartas.obtenerUrlCarta(carta);
   pintarCarta(urlCarta);
 };

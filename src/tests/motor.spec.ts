@@ -1,26 +1,32 @@
-import {obtenerNumeroCarta} from "../motor/motor";
+import { describe, it, expect, vi } from "vitest"
+import { Juego } from "../motor/motor";
+import { Cartas } from "../modelo/modelo";
 
 describe ("obtenerNumeroCarta", () => {
-    it("Debería devolver un número del 1 al 12, pero no 8 o 9", () => {
+    it("Debería devolver la carta asociada al número obtenido", () => {
         //Arrange
-        const obtenerNumeroAleatorio: number = Math.floor(Math.random() * 10) + 1;
-
+        vi.spyOn(Juego, "obtenerNumeroAleatorio").mockReturnValue(3);
+        const numeroAleatorio: number = Juego.obtenerNumeroAleatorio();
+        const cartaEsperada: number = Juego.obtenerNumeroCarta(numeroAleatorio);
+        
         //Act
-        const numeroGenerado = obtenerNumeroCarta(obtenerNumeroAleatorio);
+        const urlEsperada = Cartas.obtenerUrlCarta(cartaEsperada);
 
         //Assert
-        expect(
-            numeroGenerado === 1 ||
-            numeroGenerado === 2 ||
-            numeroGenerado === 3 ||
-            numeroGenerado === 3 ||
-            numeroGenerado === 4 ||
-            numeroGenerado === 5 ||
-            numeroGenerado === 6 ||
-            numeroGenerado === 7 ||
-            numeroGenerado === 10 ||
-            numeroGenerado === 11 ||
-            numeroGenerado === 12
-        ).toBe(true);
+        expect(urlEsperada).toBe(
+            "https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/3_tres-copas.jpg");
+
+    });
+
+    it("Debería devolver los puntos adecuados", () => {
+        //Arrange
+        vi.spyOn(Juego, "obtenerNumeroAleatorio").mockReturnValue(10);
+        const numeroAleatorio: number = Juego.obtenerNumeroAleatorio();
+        const cartaEsperada: number = Juego.obtenerNumeroCarta(numeroAleatorio);
+        const puntosEsperados: number = Juego.obtenerPuntosCarta(cartaEsperada);
+
+        //Asert
+        expect(puntosEsperados).toBe(0.5);
+
     });
 });
