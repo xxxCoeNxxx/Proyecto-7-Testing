@@ -1,4 +1,4 @@
-import { Juego } from "../motor/motor";
+import { Juego, gestionarEstadoPartida } from "../motor/motor";
 
 import { Cartas, contadores } from "../modelo/modelo";
 
@@ -13,13 +13,13 @@ const elementoImagen = document.getElementById("imgCarta");
 };
 
 const pintarPuntuacion = (puntuacion: number) => {
-    const elementoPuntuacion = document.getElementById("puntuacion");
-    if (
-        elementoPuntuacion !== null &&
-        elementoPuntuacion !== undefined &&
-        elementoPuntuacion instanceof HTMLSpanElement) {
-            elementoPuntuacion.innerText = `${puntuacion}`;
-    }
+  const elementoPuntuacion = document.getElementById("puntuacion");
+  if (
+      elementoPuntuacion !== null &&
+      elementoPuntuacion !== undefined &&
+      elementoPuntuacion instanceof HTMLSpanElement) {
+          elementoPuntuacion.innerText = `${puntuacion}`;
+  }
 };
 
 const pintarMejorPuntuacion = (mejorPuntuacion: number) => {
@@ -91,7 +91,17 @@ export const dameCarta = () => {
   comprobarPartida();
 };
 
-const comprobarPartida = () => {
+export const comprobarEstadoPartida = () => {
+  const estado = gestionarEstadoPartida();
+  if (estado === "Ganar") {
+    console.log("Has ganado");
+  }
+  if (estado === "Perder") {
+    console.log("Has perdido");
+  }
+};
+
+export const comprobarPartida = () => {
   if (contadores.puntosTotales === 7.5 || contadores.puntosTotales > 7.5) {
     if (botonDameCarta !== null && 
       botonDameCarta !== undefined && 
@@ -119,59 +129,59 @@ const botonDameCarta = document.getElementById("dameCarta");
 
 export const reinicio = () => {
   pintarCarta(Cartas.cartaBack);
-    contadores.puntosTotales = 0;
-    Juego.actualizarPuntuacion(0);
-    pintarPuntuacion(0);
-    pintarMejorPuntuacion(0);
-    pintarMensajeFinal("");
-    pintarRestantes("40");
-    contadores.reiniciarContadores();
+  contadores.puntosTotales = 0;
+  Juego.actualizarPuntuacion(0);
+  pintarPuntuacion(0);
+  pintarMejorPuntuacion(0);
+  pintarMensajeFinal("");
+  pintarRestantes("40");
+  contadores.reiniciarContadores();
 
-    const elementoComentarios = document.getElementById("mensajeComentarios");
-    if (elementoComentarios !== null && elementoComentarios instanceof HTMLSpanElement) {
-        elementoComentarios.textContent = "";  // Limpia el mensaje de comentarios
-    }
+  const elementoComentarios = document.getElementById("mensajeComentarios");
+  if (elementoComentarios !== null && elementoComentarios instanceof HTMLSpanElement) {
+      elementoComentarios.textContent = "";  // Limpia el mensaje de comentarios
+  }
 
-    if (botonDameCarta !== null && 
-      botonDameCarta !== undefined && 
-      botonDameCarta instanceof HTMLButtonElement) {
-      botonDameCarta.disabled = false;
+  if (botonDameCarta !== null && 
+    botonDameCarta !== undefined && 
+    botonDameCarta instanceof HTMLButtonElement) {
+    botonDameCarta.disabled = false;
 
-    }
-    if (botonMePlanto !== null && 
-      botonMePlanto !== undefined && 
-      botonMePlanto instanceof HTMLButtonElement) {
-      botonMePlanto.disabled = false;
-    }
-    if (botonQueHabriaPasado !== null && 
-      botonQueHabriaPasado !== undefined && 
-      botonQueHabriaPasado instanceof HTMLButtonElement) {
-      botonQueHabriaPasado.disabled = true;
-    }
-   };
+  }
+  if (botonMePlanto !== null && 
+    botonMePlanto !== undefined && 
+    botonMePlanto instanceof HTMLButtonElement) {
+    botonMePlanto.disabled = false;
+  }
+  if (botonQueHabriaPasado !== null && 
+    botonQueHabriaPasado !== undefined && 
+    botonQueHabriaPasado instanceof HTMLButtonElement) {
+    botonQueHabriaPasado.disabled = true;
+  }
+};
 
 const comprobarBotonMePlanto = () => {
-    if (
-        botonMePlanto !== null &&
-        botonMePlanto !== undefined &&
-        botonMePlanto instanceof HTMLButtonElement
-      ) {
-        botonMePlanto.addEventListener("click", () => {
-          botonMePlanto.disabled = true;
-          if (
-          botonDameCarta !== null &&
-          botonDameCarta !== undefined &&
-          botonDameCarta instanceof HTMLButtonElement) {
-            botonDameCarta.disabled = true;
-          }
-          if (
-            botonQueHabriaPasado !== null &&
-            botonQueHabriaPasado !== undefined &&
-            botonQueHabriaPasado instanceof HTMLButtonElement) {
-              botonQueHabriaPasado.disabled = false;
-            }
+  if (
+      botonMePlanto !== null &&
+      botonMePlanto !== undefined &&
+      botonMePlanto instanceof HTMLButtonElement
+    ) {
+      botonMePlanto.addEventListener("click", () => {
+        botonMePlanto.disabled = true;
+        if (
+        botonDameCarta !== null &&
+        botonDameCarta !== undefined &&
+        botonDameCarta instanceof HTMLButtonElement) {
+          botonDameCarta.disabled = true;
         }
-    )}
+        if (
+          botonQueHabriaPasado !== null &&
+          botonQueHabriaPasado !== undefined &&
+          botonQueHabriaPasado instanceof HTMLButtonElement) {
+            botonQueHabriaPasado.disabled = false;
+          }
+      }
+  )};
 };
 
 const botonMePlanto = document.getElementById("mePlanto");

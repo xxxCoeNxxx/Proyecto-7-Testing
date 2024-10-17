@@ -1,5 +1,17 @@
-import {contadores} from "../modelo/modelo";
+import {contadores, partida, EstadoPartida} from "../modelo/modelo";
 
+export const gestionarEstadoPartida = (): EstadoPartida => {
+    if (partida.puntosTotales === 7.5) {
+    partida.estadoPartida = "Ganar";
+    }
+
+    if (partida.puntosTotales > 7.5) {
+    partida.estadoPartida = "Perder";
+    }
+
+    return partida.estadoPartida;
+};
+  
 export const Juego = {
     obtenerNumeroAleatorio: () => {
         return Math.floor(Math.random() * 10) + 1;

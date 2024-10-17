@@ -29,7 +29,16 @@ export const Cartas = {
   }
 };
 
-// BORRAR SI DA FALLOS EN testing
+export type EstadoPartida = "Ganar" | "Perder" | "SeguirJugando";
+interface GestionPartida {
+  puntosTotales: number;
+  estadoPartida: EstadoPartida;
+};
+
+export const partida: GestionPartida = {
+  puntosTotales: 0,
+  estadoPartida: "SeguirJugando",
+};
 
 export const CONTMAX: number = 4;
 export const CONTTOTALMAX: number = 40;
